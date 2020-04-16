@@ -8,7 +8,8 @@
     "build": "tsc",
     "watch": "tsc -w",
     "start": "npm run watch && node dist/main.js",
-    "eslint": "eslint src/**"
+    "eslint": "eslint src/**",
+    "startw": "nodemon dist/main.js"
   },
   "author": "CCDirectLink",
   "license": "MIT",
@@ -18,6 +19,7 @@
     "@typescript-eslint/eslint-plugin": "^1.9.0",
     "@typescript-eslint/parser": "^1.9.0",
     "eslint": "^5.16.0",
+    "nodemon": "^1.19.1",
     "typescript": "^3.4.5"
   },
   "dependencies": {

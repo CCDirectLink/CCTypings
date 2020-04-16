@@ -13,5 +13,13 @@
     },
     "plugins": ["@typescript-eslint"],
     "rules": {
-    }
+    },
+    "overrides": [{
+        "files": "*.d.ts",
+        "rules": {
+            "@typescript-eslint/class-name-casing": [0],
+            "@typescript-eslint/camelcase": [0],
+            "@typescript-eslint/no-explicit-any": [0]
+        }
+    }]
 }
