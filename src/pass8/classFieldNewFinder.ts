@@ -50,14 +50,20 @@ export class ClassFieldNewFinder extends Finder {
 
     private getNewExpression(node: estree.AssignmentExpression): string | undefined {
         if (node.right.type === 'NewExpression') {
-            const name = this.getName(node.right);
-            if (name.startsWith('window.')) {
-                return name.substr('window.'.length);
+            try {
+                const name = this.getName(node.right);
+                if (name.startsWith('window.')) {
+                    return name.substr('window.'.length);
+                }
+                if (name.length === 1 || name.includes('createFromJson')) {
+                    return;
+                }
+                return name;
+            } catch (ex) {
+                if (ex !== 'Computed') {
+                    throw ex;
+                }
             }
-            if (name.length === 1 || name.includes('createFromJson')) {
-                return;
-            }
-            return name;
         }
     }
 
@@ -68,6 +74,10 @@ export class ClassFieldNewFinder extends Finder {
             case "Identifier":
                 return node.name;
             case "MemberExpression":
+                if (node.computed && node.object.type !== 'Literal') {
+                    throw 'Computed';
+                }
+
                 return this.getName(node.object) + '.' + this.getName(node.property);
             default:
                 debugger;

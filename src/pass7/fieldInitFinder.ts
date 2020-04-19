@@ -34,7 +34,13 @@ export class FieldInitFinder extends Finder {
                 }
                 break;
             case 'NewExpression':
-                field.type = this.getName(field.initSrc);
+                try {
+                    field.type = this.getName(field.initSrc);
+                } catch (ex) {
+                    if (ex !== 'Computed') {
+                        throw ex;
+                    }
+                }
                 break;
             case 'Identifier':
             case 'ArrayExpression':
@@ -55,6 +61,9 @@ export class FieldInitFinder extends Finder {
             case "Identifier":
                 return node.name;
             case "MemberExpression":
+                if (node.computed && node.object.type !== 'Literal') {
+                    throw 'Computed';
+                }
                 return this.getName(node.object) + '.' + this.getName(node.property);
             default:
                 debugger;
