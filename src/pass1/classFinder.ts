@@ -81,6 +81,10 @@ export class ClassFinder extends Finder {
             case 'Identifier':
                 return [node.name];
             case 'MemberExpression':
+                if (node.computed && node.object.type !== 'Literal') {
+                    return [];
+                }
+
                 return [...this.getName(node.object), ...this.getName(node.property)];
             case 'CallExpression':
                 const callResult = this.getName(node.callee);

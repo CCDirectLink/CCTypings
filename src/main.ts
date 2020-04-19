@@ -13,11 +13,12 @@ import { StaticClassFinder } from './pass9/staticClass';
 import { ParentFinder } from './pass10/parentFinder';
 import { KnownUnkownFinder } from './pass11/knownUnknownFinder';
 import { ParentArgsFinder } from './pass12/parentArgsFinder';
+import { HardcodedFinder } from './pass13/hardcodedFinder';
 import { Namespace } from './type';
 import { Formatter } from './output';
 import { Finder } from './pass';
 
-const code = fs.readFileSync('game.js', 'utf8');
+const code = fs.readFileSync('game.compiled.js', 'utf8');
 const ast = acorn.parse(code) as unknown as estree.Program;
 
 const passes: Finder[] = [
@@ -33,6 +34,7 @@ const passes: Finder[] = [
     new ParentFinder(),
     new KnownUnkownFinder(),
     new ParentArgsFinder(),
+    new HardcodedFinder(),
 ];
 
 const context = new Namespace('window');

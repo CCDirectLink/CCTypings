@@ -1,5 +1,5 @@
 import { Finder } from '../pass';
-import { Namespace, Class, UnionTypeMeta } from '../type';
+import { Namespace, Class } from '../type';
 import * as estree from 'estree';
 
 export class StaticClassFinder extends Finder {
@@ -24,6 +24,14 @@ export class StaticClassFinder extends Finder {
         const sound = new Class('Sound');
         sound.parentName = ['ig', 'SoundWebAudio'];
         ns.classes.push(sound);
+        
+        const propInteract = new Class('PROP_INTERACT_CLASS');
+        propInteract.parentName = ['sc', 'PropInteract'];
+        ns.classes.push(propInteract);
+        
+        const track = new Class('Track');
+        track.parentName = ['ig', 'TrackWebAudio'];
+        ns.classes.push(track);
     }
 
     private getNamespace(name: string, context: Namespace): Namespace | undefined {

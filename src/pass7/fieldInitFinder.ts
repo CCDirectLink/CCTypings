@@ -35,7 +35,10 @@ export class FieldInitFinder extends Finder {
                 break;
             case 'NewExpression':
                 try {
-                    field.type = this.getName(field.initSrc);
+                    const name = this.getName(field.initSrc);
+                    if (name.length !== 1) {
+                        field.type = name;
+                    }
                 } catch (ex) {
                     if (ex !== 'Computed') {
                         throw ex;

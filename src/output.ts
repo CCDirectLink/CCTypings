@@ -50,6 +50,14 @@ export class Formatter {
     }
 
     private clazz(clazz: Class, level: number): void {
+        if (clazz.name === 'Class') {
+            this.write(`
+    type InjectExtendBody<T> = {
+        [K in keyof T]?: T[K] extends (...args: infer A) => infer R ? (this: T & {parent(...args: A): R}, ...args: A) => R : T[K];
+    }
+`)
+        }
+
         this.declareOrExport(level);
         this.write(`class ${clazz.name} `);
         if (clazz.parent !== clazz && clazz.parentName) {
@@ -69,6 +77,12 @@ export class Formatter {
         }
         for (const func of clazz.functions) {
             this.function(func, level + 1);
+        }
+        if (clazz.name === 'Class') {
+            this.write(`
+        public static inject<T>(this: new (...args: any) => T, body: InjectExtendBody<T>): unknown;
+        public static extend<T>(this: new (...args: any) => T, body: InjectExtendBody<T>): void;
+`);
         }
         
         this.indent(level);
